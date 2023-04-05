@@ -8,21 +8,21 @@ import java.lang.System;
 public class ProductController {
     private final example.micronaut.ProductRepository productService = null;
     
-    public ProductController(@org.jetbrains.annotations.NotNull
+    public ProductController(@org.jetbrains.annotations.NotNull()
     example.micronaut.ProductRepository productService) {
         super();
     }
     
-    @org.jetbrains.annotations.NotNull
-    @io.micronaut.http.annotation.Get
+    @org.jetbrains.annotations.NotNull()
+    @io.micronaut.http.annotation.Get()
     public final java.util.List<example.micronaut.Product> list() {
         return null;
     }
     
     @io.micronaut.http.annotation.Status(value = io.micronaut.http.HttpStatus.CREATED)
-    @io.micronaut.http.annotation.Post
-    public void save(@org.jetbrains.annotations.NotNull
-    @javax.validation.Valid
+    @io.micronaut.http.annotation.Post()
+    public void save(@org.jetbrains.annotations.NotNull()
+    @javax.validation.Valid()
     example.micronaut.Product product) {
     }
 }

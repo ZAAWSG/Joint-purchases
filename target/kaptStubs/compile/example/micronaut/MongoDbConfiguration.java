@@ -6,6 +6,6 @@ import java.lang.System;
 @io.micronaut.context.annotation.ConfigurationProperties(value = "db")
 public abstract interface MongoDbConfiguration extends io.micronaut.core.naming.Named {
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public abstract java.lang.String getCollection();
 }

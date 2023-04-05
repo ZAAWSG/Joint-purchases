@@ -18,5 +18,5 @@ open class MongoDbProductRepository(
 
     private val collection: MongoCollection<Product>
         get() = mongoClient.getDatabase(mongoConf.name)
-                .getCollection(mongoConf.collection, Product::class.java)
+                .getCollection("products", Product::class.java)
 }

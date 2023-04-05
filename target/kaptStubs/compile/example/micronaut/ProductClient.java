@@ -6,13 +6,13 @@ import java.lang.System;
 @io.micronaut.http.client.annotation.Client(value = "/products")
 public abstract interface ProductClient {
     
-    @org.jetbrains.annotations.NotNull
-    @io.micronaut.http.annotation.Post
-    public abstract io.micronaut.http.HttpStatus save(@org.jetbrains.annotations.NotNull
-    @javax.validation.Valid
+    @org.jetbrains.annotations.NotNull()
+    @io.micronaut.http.annotation.Post()
+    public abstract io.micronaut.http.HttpStatus save(@org.jetbrains.annotations.NotNull()
+    @javax.validation.Valid()
     example.micronaut.Product product);
     
-    @org.jetbrains.annotations.NotNull
-    @io.micronaut.http.annotation.Get
+    @org.jetbrains.annotations.NotNull()
+    @io.micronaut.http.annotation.Get()
     public abstract java.util.List<example.micronaut.Product> findAll();
 }
