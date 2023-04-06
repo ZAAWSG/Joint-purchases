@@ -6,6 +6,7 @@ import io.micronaut.validation.Validated
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
 import javax.validation.Valid
+import com.mongodb.client.model.Filters.*
 
 @Singleton
 open class MongoDbUserRepository(
@@ -15,6 +16,15 @@ open class MongoDbUserRepository(
 
     override fun save(@Valid user: User) {
         collection.insertOne(user)
+    }
+
+    override fun findByUsernameAndPassword(username: String, password: String): User? {
+        return collection.find(
+            and(
+                eq("username", username),
+                eq("password", password)
+            )
+        ).firstOrNull()
     }
 
     private val collection: MongoCollection<User>

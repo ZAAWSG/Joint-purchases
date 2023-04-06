@@ -10,8 +10,14 @@ import javax.validation.Valid
 @ExecuteOn(TaskExecutors.IO)
 open class UserController(private val userRepository: UserRepository) {
 
+    @Get("/login")
+    open fun login(@QueryValue username: String, @QueryValue password: String): User? {
+        return userRepository.findByUsernameAndPassword(username, password)
+    }
+
     @Post
     @Status(HttpStatus.CREATED)
     open fun save(@Body @Valid user: User) =
         userRepository.save(user)
+
 }

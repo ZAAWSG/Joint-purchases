@@ -17,4 +17,14 @@ open class ProductController(private val productService: ProductRepository) {
     @Status(CREATED) 
     open fun save(@Valid product: Product) =
         productService.save(product)
+
+    @Get("/findByName")
+    open fun findByName(@QueryValue name: String): List<Product> {
+        return productService.findByName(name)
+    }
+
+    @Get("/findByType")
+    open fun findByType(@QueryValue productType: String): List<Product> {
+        return productService.findByType(productType)
+    }
 }
