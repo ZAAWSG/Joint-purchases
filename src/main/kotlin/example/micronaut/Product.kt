@@ -6,6 +6,7 @@ import org.bson.BsonType
 import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.conversions.Bson
+import org.bson.types.ObjectId
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.validation.constraints.NotBlank

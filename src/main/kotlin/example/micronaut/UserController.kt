@@ -8,7 +8,8 @@ import javax.validation.Valid
 
 @Controller("/users")
 @ExecuteOn(TaskExecutors.IO)
-open class UserController(private val userRepository: UserRepository) {
+open class
+UserController(private val userRepository: UserRepository) {
 
     @Get("/login")
     open fun login(@QueryValue username: String, @QueryValue password: String): User? {
