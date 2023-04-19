@@ -38,9 +38,11 @@ data class PaymentInfo @BsonCreator constructor(
 }
 
 data class OrderHistory @BsonCreator constructor(
+    @field:BsonProperty("idProduct") @param:BsonProperty("idProduct") val idProduct: String,
     @field:BsonProperty("product_name") @param:BsonProperty("product_name") val productName: String,
     @field:BsonProperty("purchase_date") @param:BsonProperty("purchase_date") val purchaseDate: String,
-    @field:BsonProperty("order_status") @param:BsonProperty("order_status") val orderStatus: String
+    @field:BsonProperty("order_status") @param:BsonProperty("order_status") val orderStatus: String,
+    @field:BsonProperty("quantityNum") @param:BsonProperty("quantityNum") val quantityNum: Int
 ) {
-    constructor() : this("", "", "")
+    constructor() : this("","", "", "",0)
 }

@@ -18,6 +18,21 @@ open class ProductController(private val productService: ProductRepository) {
     open fun save(@Valid product: Product) =
         productService.save(product)
 
+    @Put("/{id}")
+    open fun update(@PathVariable id: String, @QueryValue userId:String, @QueryValue quantity: Int): Product {
+        val product = productService.findById(id) ?: throw RuntimeException("Product not found")
+
+        if (product.acceptQuantity < quantity) {
+            throw RuntimeException("Not enough stock available")
+        }
+        if(product.acceptQuantity - quantity == 0){
+            productService.changeStatus(id)
+        }
+        productService.saveUserData(userId, id,product.name, quantity)
+        productService.update(id, quantity, userId)
+
+        return product
+    }
     @Get("/findByName")
     open fun findByName(@QueryValue name: String): List<Product> {
         return productService.findByName(name)
@@ -27,4 +42,25 @@ open class ProductController(private val productService: ProductRepository) {
     open fun findByType(@QueryValue productType: String): List<Product> {
         return productService.findByType(productType)
     }
+
+    @Get("/{id}")
+    open fun findById(@PathVariable id: String): Product? {
+        return productService.findById(id)
+    }
+
+    @Post("/{id}")
+    open fun buyProduct(@PathVariable id: String, @QueryValue userId: String, @QueryValue quantity: Int): String {
+        val product = productService.findById(id) ?: throw RuntimeException("Product not found")
+
+        if (product.acceptQuantity < quantity) {
+            throw RuntimeException("Not enough stock available")
+        }
+
+        product.acceptQuantity -= quantity
+        productService.save(product)
+
+        return "success"
+    }
+
+
 }

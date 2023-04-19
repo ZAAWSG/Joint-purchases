@@ -1,5 +1,6 @@
 package example.micronaut
 
+import org.bson.types.ObjectId
 import javax.validation.Valid
 
 interface ProductRepository {
@@ -11,4 +12,12 @@ interface ProductRepository {
     fun findByName(name: String): List<Product>
 
     fun findByType(productType: String): List<Product>
+
+    fun findById(productId: String): Product?
+
+    fun update(productId: String, quantity: Int, userId: String)
+
+    fun changeStatus(productId: String)
+
+    fun saveUserData(userId: String, productId: String, productName: String, quantity: Int)
 }
