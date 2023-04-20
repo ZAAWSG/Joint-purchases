@@ -8,6 +8,7 @@ import jakarta.inject.Singleton
 import org.bson.types.ObjectId
 import javax.validation.Valid
 import com.mongodb.client.model.Filters.*
+import com.mongodb.client.model.Updates
 
 @Singleton
 open class MongoDbUserRepository(
@@ -23,6 +24,15 @@ open class MongoDbUserRepository(
     }
     override fun findById(userId: String): User? {
         return collection.find(Filters.eq("_id", ObjectId(userId))).firstOrNull()
+    }
+
+    override fun changePassword(username: String, oldPassword: String, newPassword: String) {
+        val query = Filters.and(
+            Filters.eq("username", username),
+            Filters.eq("password", oldPassword)
+        )
+        val update = Updates.set("password", newPassword)
+        collection.updateOne(query, update)
     }
 
     override fun findByUsernameAndPassword(username: String, password: String): User? {

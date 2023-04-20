@@ -21,4 +21,9 @@ UserController(private val userRepository: UserRepository) {
     open fun save(@Body @Valid user: User) =
         userRepository.save(user)
 
+    @Put("/changePassword")
+    open fun changePass(@QueryValue username: String, @QueryValue oldPassword: String, @QueryValue newPassword: String): User?{
+        userRepository.changePassword(username,oldPassword, newPassword)
+        return userRepository.findByUsernameAndPassword(username, newPassword)
+    }
 }

@@ -12,4 +12,6 @@ interface UserRepository {
     fun save(@Valid user: User)
 
     fun findById(userId: String): User? // Добавленный метод
+
+    fun changePassword(username: String, oldPassword: String, newPassword: String)
 }

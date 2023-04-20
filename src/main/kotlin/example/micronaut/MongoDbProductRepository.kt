@@ -3,6 +3,7 @@ package example.micronaut
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Projections
 import com.mongodb.client.model.Updates
 import jakarta.inject.Singleton
 import org.bson.Document
@@ -48,6 +49,9 @@ open class MongoDbProductRepository(
         mongoClient.getDatabase(mongoConf.name).getCollection("users").updateOne(query, update)
     }
 
+    override fun checkProductStatus(productId: String): Product? {
+        return collection.find(Filters.eq("_id", ObjectId(productId))).firstOrNull()
+    }
     override fun list(): List<Product> = collection.find().into(ArrayList())
 
     override fun findByName(name: String): List<Product> {
@@ -56,9 +60,10 @@ open class MongoDbProductRepository(
         return collection.find(query).toList()
     }
 
-    override fun findByType(productType: String): List<Product> {
+    override fun findByType(productType: String): String {
         val query = Document("productType", productType)
-        return collection.find(query).toList()
+        val result = collection.find(query).projection(Projections.include("status")).first()
+        return result.status.toString()
     }
 
     override fun findById(productId: String): Product? {

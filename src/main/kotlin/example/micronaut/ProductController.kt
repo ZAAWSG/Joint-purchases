@@ -37,9 +37,13 @@ open class ProductController(private val productService: ProductRepository) {
     open fun findByName(@QueryValue name: String): List<Product> {
         return productService.findByName(name)
     }
+    @Get("/checkProductStatus")
+    open fun checkStatus(@QueryValue id: String): String? {
+        return productService.checkProductStatus(id)?.let { it.status }
+    }
 
     @Get("/findByType")
-    open fun findByType(@QueryValue productType: String): List<Product> {
+    open fun findByType(@QueryValue productType: String): String {
         return productService.findByType(productType)
     }
 
