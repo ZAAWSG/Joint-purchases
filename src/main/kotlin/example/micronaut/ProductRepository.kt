@@ -12,7 +12,7 @@ interface ProductRepository {
 
     fun findByName(name: String): List<Product>
 
-    fun findByType(productType: String): String
+    fun findByType(productType: String): List<Product>
 
     fun findById(productId: String): Product?
 

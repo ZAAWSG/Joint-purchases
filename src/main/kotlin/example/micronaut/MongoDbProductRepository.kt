@@ -27,8 +27,8 @@ open class MongoDbProductRepository(
         collection.insertOne(product)
     }
     override fun update(productId: String, quantity: Int, userId: String) {
-        val creatorInfo = userRepository.findById(userId)
-            ?: throw RuntimeException("User is not founded")
+//        val creatorInfo = userRepository.findById(userId)
+//            ?: throw RuntimeException("User is not founded")
 
         val query = Filters.eq("_id", ObjectId(productId))
         val update = Updates.combine(
@@ -60,10 +60,9 @@ open class MongoDbProductRepository(
         return collection.find(query).toList()
     }
 
-    override fun findByType(productType: String): String {
+    override fun findByType(productType: String): List<Product> {
         val query = Document("productType", productType)
-        val result = collection.find(query).projection(Projections.include("status")).first()
-        return result.status.toString()
+        return collection.find(query).toList()
     }
 
     override fun findById(productId: String): Product? {
