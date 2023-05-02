@@ -10,6 +10,7 @@ services:
     environment:
       - MONGODB_URI=mongodb+srv://kukakukakuka2017:dbhec123@jointpurchase.trdrebh.mongodb.net/test
       - MONGODB_DATABASE=micronaut
+    platform: linux/amd64
   mongo:
     image: mongo:4.4
     ports:
