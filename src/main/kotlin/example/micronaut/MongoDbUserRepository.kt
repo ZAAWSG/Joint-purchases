@@ -20,6 +20,9 @@ open class MongoDbUserRepository(
         if (collection.countDocuments(eq("email", user.email)) > 0) {
             throw IllegalArgumentException("User with email ${user.email} already exists")
         }
+        if (collection.countDocuments(eq("username", user.username)) > 0) {
+            throw IllegalArgumentException("User with username ${user.username} already exists")
+        }
         collection.insertOne(user)
     }
     override fun findById(userId: String): User? {

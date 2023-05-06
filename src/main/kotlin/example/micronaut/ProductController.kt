@@ -16,8 +16,11 @@ import javax.validation.Valid
 @ExecuteOn(TaskExecutors.IO) 
 open class ProductController(private val productService: ProductRepository) { 
 
-    @Get 
-    fun list(): List<Product> = productService.list()
+    @Get
+    fun list(): List<ProductWithId> {
+        val products = productService.list()
+        return products.map { ProductWithId(it, it.id.toString()) }
+    }
 
     @Post ("/createProduct")
     @Status(CREATED) 
@@ -48,8 +51,9 @@ open class ProductController(private val productService: ProductRepository) {
     }
 
     @Get("/findByName")
-    open fun findByName(@QueryValue name: String): List<Product> {
-        return productService.findByName(name)
+    open fun findByName(@QueryValue name: String): List<ProductWithId> {
+        val products = productService.findByName(name)
+        return products.map { ProductWithId(it, it.id.toString()) }
     }
     @Get("/checkProductStatus")
     open fun checkStatus(@QueryValue id: String): String? {
@@ -57,8 +61,9 @@ open class ProductController(private val productService: ProductRepository) {
     }
 
     @Get("/findByType")
-    open fun findByType(@QueryValue productType: String): List<Product> {
-        return productService.findByType(productType)
+    open fun findByType(@QueryValue productType: String): List<ProductWithId> {
+        val products = productService.findByType(productType)
+        return products.map { ProductWithId(it, it.id.toString()) }
     }
 
     @Get("/{id}")

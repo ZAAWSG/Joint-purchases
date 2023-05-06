@@ -2,12 +2,14 @@ package example.micronaut
 
 import io.micronaut.core.annotation.Introspected
 import org.bson.codecs.pojo.annotations.BsonCreator
+import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
 import javax.validation.constraints.NotBlank
 
 @Introspected
 data class Product @BsonCreator constructor(
+    @field:BsonProperty("id",useDiscriminator = false) @param:BsonProperty("_id") val id: ObjectId?,
     @field:BsonProperty("name") @param:BsonProperty("name") @field:NotBlank val name: String,
     @field:BsonProperty("description") @param:BsonProperty("description") var description: String?,
     @field:BsonProperty("creator") @param:BsonProperty("creator") val creator: String,
@@ -18,9 +20,12 @@ data class Product @BsonCreator constructor(
     @field:BsonProperty("acceptQuantity") @param:BsonProperty("acceptQuantity") var acceptQuantity: Int,
     @field:BsonProperty("price") @param:BsonProperty("price") val price: Double,
     @field:BsonProperty("users_id") @param:BsonProperty("users_id") val users: List<UserInfo>,
-    @field:BsonProperty("status") @param:BsonProperty("status") val status: String
+    @field:BsonProperty("status") @param:BsonProperty("status") val status: String,
+    @field:BsonProperty("urlImage") @param:BsonProperty("urlImage") val urlImage: String
+
 ) {
-    constructor() : this("", null, "", "","", "", 0,0, 0.0, emptyList(), "")
+    constructor() : this(ObjectId(), "", null, "", "", "", "", 0, 0, 0.0, emptyList(), "","") {
+    }
 }
 
 data class UserInfo @BsonCreator constructor(

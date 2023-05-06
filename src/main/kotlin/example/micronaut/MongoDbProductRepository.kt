@@ -33,7 +33,7 @@ open class MongoDbProductRepository(
         val query = Filters.eq("_id", ObjectId(productId))
         val update = Updates.combine(
             Updates.inc("acceptQuantity", -quantity),
-            Updates.addToSet("users_id", UserInfo(ObjectId(userId), LocalDate.now().toString(), quantity))
+            Updates.push("users_id", UserInfo(ObjectId(userId), LocalDate.now().toString(), quantity))
         )
         collection.updateOne(query, update)
     }
@@ -45,8 +45,8 @@ open class MongoDbProductRepository(
 
     override fun saveUserData(userId: String, productId: String, productName: String, quantity: Int) {
         val query = Filters.eq("_id", ObjectId(userId))
-        val update = Updates.addToSet("order_history", OrderHistory(productId, productName, LocalDate.now().toString(), "Open",quantity))
-        mongoClient.getDatabase(mongoConf.name).getCollection("users").updateOne(query, update)
+        val update = Updates.push("order_history", OrderHistory(productId, productName, LocalDate.now().toString(), "Open",quantity))
+        mongoClient.getDatabase(mongoConf.name).getCollection("users").updateMany(query, update)
     }
 
     override fun checkProductStatus(productId: String): Product? {

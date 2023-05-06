@@ -1,21 +1,14 @@
 package example.micronaut
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import io.micronaut.core.annotation.Introspected
-import org.bson.BsonType
 import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonProperty
-import org.bson.conversions.Bson
 import org.bson.types.ObjectId
-import java.time.LocalDate
-import java.time.LocalDateTime
-import javax.validation.constraints.NotBlank
-
 
 
 @Introspected
 data class User @BsonCreator constructor(
-    @field:BsonProperty("_id",useDiscriminator = false) @param:BsonProperty("_id") val _id: ObjectId?,
+    @field:BsonProperty("id",useDiscriminator = false) @param:BsonProperty("_id")  val id: ObjectId?,
     @field:BsonProperty("username") @param:BsonProperty("username") val username: String,
     @field:BsonProperty("password") @param:BsonProperty("password") val password: String,
     @field:BsonProperty("email") @param:BsonProperty("email") val email: String,
@@ -26,7 +19,7 @@ data class User @BsonCreator constructor(
     @field:BsonProperty("order_history") @param:BsonProperty("order_history") val orderHistory: List<OrderHistory>,
     @field:BsonProperty("organizer") @param:BsonProperty("organizer") val organizer: Boolean
 ) {
-    constructor() : this(ObjectId.get(),"", "", "", "", "", "", emptyList(), emptyList(), false)
+    constructor() : this(ObjectId(),"", "", "", "", "", "", emptyList(), emptyList(), false)
 }
 
 data class PaymentInfo @BsonCreator constructor(

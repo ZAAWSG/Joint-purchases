@@ -12,8 +12,9 @@ open class
 UserController(private val userRepository: UserRepository) {
 
     @Get("/login")
-    open fun login(@QueryValue username: String, @QueryValue password: String): User? {
-        return userRepository.findByUsernameAndPassword(username, password)
+    open fun login(@QueryValue username: String, @QueryValue password: String): UserWithId? {
+        val user = userRepository.findByUsernameAndPassword(username, password)
+        return if (user != null) UserWithId(user, user.id.toString() ?: "") else null
     }
 
     @Post
@@ -22,8 +23,15 @@ UserController(private val userRepository: UserRepository) {
         userRepository.save(user)
 
     @Put("/changePassword")
-    open fun changePass(@QueryValue username: String, @QueryValue oldPassword: String, @QueryValue newPassword: String): User?{
+    open fun changePass(@QueryValue username: String, @QueryValue oldPassword: String, @QueryValue newPassword: String): UserWithId?{
         userRepository.changePassword(username,oldPassword, newPassword)
-        return userRepository.findByUsernameAndPassword(username, newPassword)
+        val user = userRepository.findByUsernameAndPassword(username, newPassword)
+        return if (user != null) UserWithId(user, user.id.toString() ?: "") else null
     }
+    @Get("/{id}")
+    open fun findById(@PathVariable id: String): UserWithId? {
+        val user = userRepository.findById(id)
+        return if (user != null) UserWithId(user, user.id.toString() ?: "") else null
+    }
+
 }

@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ubunutu:16.04
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
