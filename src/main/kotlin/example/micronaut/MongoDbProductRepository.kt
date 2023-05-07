@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import com.mongodb.client.model.Updates
+import io.jsonwebtoken.Jwts
 import jakarta.inject.Singleton
 import org.bson.Document
 import org.bson.types.ObjectId
@@ -17,23 +18,21 @@ open class MongoDbProductRepository(
     private val mongoClient: MongoClient,
     private val userRepository: UserRepository) : ProductRepository {
 
-    override fun save(@Valid product: Product) {
-        val creatorInfo = userRepository.findById(product.creator)
-
-        if (creatorInfo?.organizer != true) {
-            throw RuntimeException("User is not authorized to create products")
+    override fun save(@Valid product: Product, token: String) {
+        val user = userRepository.findByToken(token)
+        if (user != null) {
+            product.creator = user.id.toString()
         }
-
         collection.insertOne(product)
     }
-    override fun update(productId: String, quantity: Int, userId: String) {
+    override fun update(productId: String, quantity: Int, token: String) {
 //        val creatorInfo = userRepository.findById(userId)
 //            ?: throw RuntimeException("User is not founded")
-
+        val user = userRepository.findByToken(token)
         val query = Filters.eq("_id", ObjectId(productId))
         val update = Updates.combine(
             Updates.inc("acceptQuantity", -quantity),
-            Updates.push("users_id", UserInfo(ObjectId(userId), LocalDate.now().toString(), quantity))
+            Updates.push("users_id", user?.id?.let { UserInfo(it, LocalDate.now().toString(), quantity) })
         )
         collection.updateOne(query, update)
     }
@@ -43,8 +42,9 @@ open class MongoDbProductRepository(
         collection.updateOne(query, update)
     }
 
-    override fun saveUserData(userId: String, productId: String, productName: String, quantity: Int) {
-        val query = Filters.eq("_id", ObjectId(userId))
+    override fun saveUserData(token: String, productId: String, productName: String, quantity: Int) {
+        val user = userRepository.findByToken(token)
+        val query = Filters.eq("_id", user?.id)
         val update = Updates.push("order_history", OrderHistory(productId, productName, LocalDate.now().toString(), "Open",quantity))
         mongoClient.getDatabase(mongoConf.name).getCollection("users").updateMany(query, update)
     }

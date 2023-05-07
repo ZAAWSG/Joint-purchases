@@ -8,7 +8,7 @@ interface ProductRepository {
 
     fun list(): List<Product>
 
-    fun save(@Valid product: Product)
+    fun save(@Valid product: Product, token: String)
 
     fun findByName(name: String): List<Product>
 
@@ -16,11 +16,11 @@ interface ProductRepository {
 
     fun findById(productId: String): Product?
 
-    fun update(productId: String, quantity: Int, userId: String)
+    fun update(productId: String, quantity: Int, token: String)
 
     fun changeStatus(productId: String)
 
-    fun saveUserData(userId: String, productId: String, productName: String, quantity: Int)
+    fun saveUserData(token: String, productId: String, productName: String, quantity: Int)
 
     fun checkProductStatus(productId: String): Product?
 }

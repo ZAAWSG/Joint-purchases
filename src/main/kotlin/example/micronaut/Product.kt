@@ -12,7 +12,7 @@ data class Product @BsonCreator constructor(
     @field:BsonProperty("id",useDiscriminator = false) @param:BsonProperty("_id") val id: ObjectId?,
     @field:BsonProperty("name") @param:BsonProperty("name") @field:NotBlank val name: String,
     @field:BsonProperty("description") @param:BsonProperty("description") var description: String?,
-    @field:BsonProperty("creator") @param:BsonProperty("creator") val creator: String,
+    @field:BsonProperty("creator") @param:BsonProperty("creator") var creator: String?,
     @field:BsonProperty("productType") @param:BsonProperty("productType") val productType: String,
     @field:BsonProperty("created_date") @param:BsonProperty("created_date") val createdDate: String,
     @field:BsonProperty("deadline_date") @param:BsonProperty("deadline_date") val deadlineDate: String,

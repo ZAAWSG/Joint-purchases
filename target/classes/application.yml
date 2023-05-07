@@ -1,6 +1,12 @@
 micronaut:
   application:
     name: micronautguide
+  security:
+    enabled: true
+    token:
+      jwt:
+        enabled: true
+        secret: secret
 ---
 #tag::db[]
 db:

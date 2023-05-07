@@ -14,4 +14,6 @@ interface UserRepository {
     fun findById(userId: String): User? // Добавленный метод
 
     fun changePassword(username: String, oldPassword: String, newPassword: String)
+
+    fun findByToken(token: String): User?
 }

@@ -17,9 +17,9 @@ data class User @BsonCreator constructor(
     @field:BsonProperty("phone_number") @param:BsonProperty("phone_number") val phoneNumber: String,
     @field:BsonProperty("payment_info") @param:BsonProperty("payment_info") val paymentInfo: List<OrderHistory>,
     @field:BsonProperty("order_history") @param:BsonProperty("order_history") val orderHistory: List<OrderHistory>,
-    @field:BsonProperty("organizer") @param:BsonProperty("organizer") val organizer: Boolean
+    @field:BsonProperty("roles") @param:BsonProperty("roles") val roles: List<String>
 ) {
-    constructor() : this(ObjectId(),"", "", "", "", "", "", emptyList(), emptyList(), false)
+    constructor() : this(ObjectId(),"", "", "", "", "", "", emptyList(), emptyList(), emptyList())
 }
 
 data class PaymentInfo @BsonCreator constructor(
