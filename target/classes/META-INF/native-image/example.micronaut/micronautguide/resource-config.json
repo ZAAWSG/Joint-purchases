@@ -10,6 +10,8 @@
   }, {
     "pattern" : "\\QMETA-INF/spring-configuration-metadata.json\\E"
   }, {
+    "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/example.micronaut.$TokenService$Definition$Reference\\E"
+  }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/example.micronaut.$UserController$Definition$Reference\\E"
   }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.core.beans.BeanIntrospectionReference/example.micronaut.$Product$IntrospectionRef\\E"
@@ -17,6 +19,8 @@
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/example.micronaut.$MongoDbUserRepository$Definition$Intercepted$Definition$Reference\\E"
   }, {
     "pattern" : "\\Qapplication.yml\\E"
+  }, {
+    "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/example.micronaut.$TokenConverter$Definition$Reference\\E"
   }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/example.micronaut.$MongoDbUserRepository$Definition$Reference\\E"
   }, {
