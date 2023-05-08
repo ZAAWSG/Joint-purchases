@@ -18,10 +18,10 @@ import java.util.function.Predicate
 
 @ServerWebSocket("/ws/chat/{id1}/{id2}")
 @Secured(SecurityRule.IS_ANONYMOUS)
-class ChatWebSocket(private val broadcaster: WebSocketBroadcaster, private val userRepository: UserRepository, private val chatMessageRepository: ChatMessageRepository) {
+class ChatWebSocket(private val broadcaster: WebSocketBroadcaster, private val chatMessageRepository: ChatMessageRepository) {
 
     private fun log(event: String, session: WebSocketSession, id1: String, id2: String) {
-        val name_2 = userRepository.findById(id1)?.firstName.toString()
+        val name_2 = chatMessageRepository.findById(id1)?.firstName.toString()
         LOG.info("* WebSocket: {} received for session {} from '{}' regarding '{}'",
             event, session.id, id2, name_2)
     }
@@ -29,7 +29,7 @@ class ChatWebSocket(private val broadcaster: WebSocketBroadcaster, private val u
     @OnOpen
     fun onOpen(id1: String, id2: String, session: WebSocketSession): Publisher<String> {
         log("onOpen", session, id1, id2)
-        val name_2 = userRepository.findById(id1)?.firstName.toString()
+        val name_2 = chatMessageRepository.findById(id1)?.firstName.toString()
         val message = String.format("[%s] Зашел в чат!", name_2)
         return broadcaster.broadcast(message, isValid(id1, id2))
     }
@@ -37,7 +37,7 @@ class ChatWebSocket(private val broadcaster: WebSocketBroadcaster, private val u
     @OnMessage
     fun onMessage(id1: String, id2: String, message: String, session: WebSocketSession): Publisher<String> {
         log("onMessage", session, id1, id2)
-        val name_2 = userRepository.findById(id1)?.firstName.toString()
+        val name_2 = chatMessageRepository.findById(id1)?.firstName.toString()
         val id = ObjectId().toString()
         val chatMessage = ChatMessage(
             id = id ,
@@ -53,7 +53,7 @@ class ChatWebSocket(private val broadcaster: WebSocketBroadcaster, private val u
     @OnClose
     fun onClose(id1: String, id2: String, session: WebSocketSession): Publisher<String> {
         log("onClose", session, id1, id2)
-        val name_2 = userRepository.findById(id1)?.firstName.toString()
+        val name_2 = chatMessageRepository.findById(id1)?.firstName.toString()
         return broadcaster.broadcast(String.format("[%s] Leaving chat with %s!", name_2, id2), isValid(id1, id2))
     }
 

@@ -2,6 +2,7 @@ package example.micronaut
 
 import com.mongodb.client.FindIterable
 import com.mongodb.client.MongoClient
+import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Filters.and
 import com.mongodb.client.model.Filters.eq
 import com.mongodb.client.result.InsertOneResult
@@ -29,6 +30,13 @@ class ChatMessageRepository(private val mongoClient: MongoClient, private val mo
             .getDatabase(mongoConf.name)
             .getCollection("chat", ChatMessage::class.java)
             .find()
+    }
+
+    fun findById(userId: String): User? {
+        return mongoClient
+            .getDatabase(mongoConf.name)
+            .getCollection("users", User::class.java)
+            .find(Filters.eq("_id", ObjectId(userId))).firstOrNull()
     }
 
     fun findBySenderIdAndReceiverId(senderId: String, receiverId: String): FindIterable<ChatMessage> {

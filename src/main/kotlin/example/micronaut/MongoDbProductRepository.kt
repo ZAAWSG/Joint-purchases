@@ -42,10 +42,10 @@ open class MongoDbProductRepository(
         collection.updateOne(query, update)
     }
 
-    override fun saveUserData(token: String, productId: String, productName: String, quantity: Int) {
+    override fun saveUserData(token: String, productId: String, productName: String, quantity: Int, urlImage: String) {
         val user = userRepository.findByToken(token)
         val query = Filters.eq("_id", user?.id)
-        val update = Updates.push("order_history", OrderHistory(productId, productName, LocalDate.now().toString(), "Open",quantity))
+        val update = Updates.push("order_history", OrderHistory(productId, productName, LocalDate.now().toString(), "Open",quantity, urlImage))
         mongoClient.getDatabase(mongoConf.name).getCollection("users").updateMany(query, update)
     }
 

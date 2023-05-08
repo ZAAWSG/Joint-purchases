@@ -53,7 +53,7 @@ open class ProductController(private val productService: ProductRepository) {
         } catch (e: DateTimeParseException) {
             throw RuntimeException("Invalid deadline date format")
         }
-        productService.saveUserData(token, id,product.name, quantity)
+        productService.saveUserData(token, id,product.name, quantity, product.urlImage)
         productService.update(id, quantity, token)
 
         return productService.findById(id) ?: throw RuntimeException("Product not found")

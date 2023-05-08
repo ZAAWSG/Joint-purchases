@@ -20,7 +20,7 @@ interface ProductRepository {
 
     fun changeStatus(productId: String)
 
-    fun saveUserData(token: String, productId: String, productName: String, quantity: Int)
+    fun saveUserData(token: String, productId: String, productName: String, quantity: Int, urlImage: String)
 
     fun checkProductStatus(productId: String): Product?
 }
