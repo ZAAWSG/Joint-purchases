@@ -30,7 +30,7 @@ class ChatWebSocket(private val broadcaster: WebSocketBroadcaster, private val u
     fun onOpen(id1: String, id2: String, session: WebSocketSession): Publisher<String> {
         log("onOpen", session, id1, id2)
         val name_2 = userRepository.findById(id1)?.firstName.toString()
-        val message = String.format("[%s] Now making announcements!", name_2)
+        val message = String.format("[%s] Зашел в чат!", name_2)
         return broadcaster.broadcast(message, isValid(id1, id2))
     }
 
