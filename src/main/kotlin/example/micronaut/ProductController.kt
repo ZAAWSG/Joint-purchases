@@ -47,7 +47,7 @@ open class ProductController(private val productService: ProductRepository) {
             throw HttpStatusException(HttpStatus.NOT_FOUND, "Not enough stock available.")
         }
         try {
-            if(product.acceptQuantity - quantity == 0 || localDateTime > LocalDateTime.now()){
+            if(product.acceptQuantity - quantity == 0){
                 productService.changeStatus(id)
             }
         } catch (e: DateTimeParseException) {
