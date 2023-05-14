@@ -56,7 +56,7 @@ open class MongoDbProductRepository(
 
     override fun findByName(name: String): List<Product> {
         val regex = ".*${name}.*"
-        val query = Document("name", Document("\$regex", regex))
+        val query = Document("name", Document("\$regex", regex).append("\$options", "i"))
         return collection.find(query).toList()
     }
 

@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux
 
 @Singleton
 class ChatMessageRepository(private val mongoClient: MongoClient, private val mongoConf: MongoDbConfiguration,) {
-    private val collectionName = "chat_messages"
+
 
     fun save(message: ChatMessage): InsertOneResult {
         val id = ObjectId().toString()
