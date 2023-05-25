@@ -35,29 +35,9 @@ open class ProductController(private val productService: ProductRepository) {
     }
     @Post ("/createProduct")
     @Status(CREATED)
-    open fun save(@Header("Authorization") authorization: String, @Body @Valid product: Product, @QueryValue file_path: String) {
+    open fun save(@Header("Authorization") authorization: String, @Body @Valid product: Product) {
         val token = getTokenFromAuthorizationHeader(authorization)
-
-        val bucketName = "joint-purchase-386115.appspot.com"
-        val objectName = product.name + ".jpg"
-        val storage = StorageOptions.getDefaultInstance().service
-        val blobId = BlobId.of(bucketName, objectName)
-        val blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build()
-        val precondition: Storage.BlobWriteOption
-        if (storage.get(bucketName, objectName) == null) {
-            precondition = Storage.BlobWriteOption.doesNotExist()
-        } else {
-            precondition =
-                Storage.BlobWriteOption.generationMatch(
-                    storage.get(bucketName, objectName).generation)
-        }
-
-        val file = File(file_path)
-        storage.create(blobInfo, file.inputStream(), precondition)
-        val imageUrl = "https://storage.googleapis.com/joint-purchase-386115.appspot.com/" + objectName
-        val productWithImage = product.copy(urlImage = imageUrl)
-
-        productService.save(productWithImage, token)
+        productService.save(product, token)
     }
 
     @Put("/{id}")
