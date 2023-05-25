@@ -16,23 +16,48 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import javax.validation.Valid
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
+import java.io.File
+
 
 @Controller("/products") 
 @ExecuteOn(TaskExecutors.IO)
 @Secured(SecurityRule.IS_ANONYMOUS)
-open class ProductController(private val productService: ProductRepository) { 
+open class ProductController(private val productService: ProductRepository) {
 
     @Get
     fun list(): List<ProductWithId> {
         val products = productService.list()
         return products.map { ProductWithId(it, it.id.toString()) }
     }
-
     @Post ("/createProduct")
-    @Status(CREATED) 
-    open fun save(@Header("Authorization") authorization: String, @Body @Valid product: Product) {
+    @Status(CREATED)
+    open fun save(@Header("Authorization") authorization: String, @Body @Valid product: Product, @QueryValue file_path: String) {
         val token = getTokenFromAuthorizationHeader(authorization)
-        productService.save(product, token)
+
+        val bucketName = "joint-purchase-386115.appspot.com"
+        val objectName = product.name + ".jpg"
+        val storage = StorageOptions.getDefaultInstance().service
+        val blobId = BlobId.of(bucketName, objectName)
+        val blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build()
+        val precondition: Storage.BlobWriteOption
+        if (storage.get(bucketName, objectName) == null) {
+            precondition = Storage.BlobWriteOption.doesNotExist()
+        } else {
+            precondition =
+                Storage.BlobWriteOption.generationMatch(
+                    storage.get(bucketName, objectName).generation)
+        }
+
+        val file = File(file_path)
+        storage.create(blobInfo, file.inputStream(), precondition)
+        val imageUrl = "https://storage.googleapis.com/joint-purchase-386115.appspot.com/" + objectName
+        val productWithImage = product.copy(urlImage = imageUrl)
+
+        productService.save(productWithImage, token)
     }
 
     @Put("/{id}")
@@ -53,7 +78,7 @@ open class ProductController(private val productService: ProductRepository) {
         } catch (e: DateTimeParseException) {
             throw RuntimeException("Invalid deadline date format")
         }
-        productService.saveUserData(token, id,product.name, quantity, product.urlImage)
+        productService.saveUserData(token, id,product.name, quantity, product.urlImage.toString())
         productService.update(id, quantity, token)
 
         return productService.findById(id) ?: throw RuntimeException("Product not found")

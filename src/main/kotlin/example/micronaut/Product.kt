@@ -21,7 +21,7 @@ data class Product @BsonCreator constructor(
     @field:BsonProperty("price") @param:BsonProperty("price") val price: Double,
     @field:BsonProperty("users_id") @param:BsonProperty("users_id") val users: List<UserInfo>,
     @field:BsonProperty("status") @param:BsonProperty("status") val status: String,
-    @field:BsonProperty("urlImage") @param:BsonProperty("urlImage") val urlImage: String
+    @field:BsonProperty("urlImage") @param:BsonProperty("urlImage") val urlImage: String?
 
 ) {
     constructor() : this(ObjectId(), "", null, "", "", "", "", 0, 0, 0.0, emptyList(), "","") {
